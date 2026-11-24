@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <!-- Левая колонка: информация о пользователе -->
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="bi bi-person-circle" style="font-size: 4rem; color: #6c757d;"></i>
+                </div>
+                <h4 class="card-title">{{ user.full_name }}</h4>
+                <p class="text-muted">@{{ user.username }}</p>
+                <p class="small text-muted">{{ user.email }}</p>
+                <hr>
+                <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm w-100">Выйти из профиля</a>
+            </div>
+        </div>
+
+        <!-- Меню навигации -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Меню</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action active">
+                    📋 Мои заявки
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    ➕ Создать заявку
+                </a>
+                <a href="{% url 'home' %}" class="list-group-item list-group-item-action">
+                    🏠 Главная страница
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Правая колонка: основной контент -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Мои заявки</h4>
+            </div>
+            <div class="card-body">
+                <!-- Заглушка для списка заявок -->
+                <div class="text-center py-5">
+                    <i class="bi bi-inbox" style="font-size: 3rem; color: #6c757d;"></i>
+                    <h5 class="mt-3 text-muted">Здесь будут отображаться ваши заявки</h5>
+                    <p class="text-muted">Функционал просмотра и управления заявками будет добавлен в следующем этапе разработки.</p>
+                    <button class="btn btn-primary mt-3" disabled>
+                        ➕ Создать заявку (скоро)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Информационный блок -->
+        <div class="alert alert-info mt-4">
+            <h5>ℹ️ Информация</h5>
+            <p class="mb-0">В личном кабинете вы сможете:</p>
+            <ul class="mb-0 mt-2">
+                <li>Создавать заявки на дизайн интерьера</li>
+                <li>Просматривать статус своих заявок</li>
+                <li>Удалять заявки со статусом "Новая"</li>
+                <li>Фильтровать заявки по статусу</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
