@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.exceptions import ValidationError
 import re
 from .models import User
+from .models import Request
 
 
 class RegisterForm(UserCreationForm):
@@ -59,3 +60,31 @@ class LoginForm(AuthenticationForm):
         label='Пароль',
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
+
+
+class RequestForm(forms.ModelForm):
+    """Форма создания заявки"""
+
+    class Meta:
+        model = Request
+        fields = ['title', 'description', 'category', 'photo']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
+            'photo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean_photo(self):
+        """Проверка фото: формат и размер (ТЗ)"""
+        photo = self.cleaned_data.get('photo')
+        if photo:
+            # 1. Проверка формата
+            ext = photo.name.split('.')[-1].lower()
+            if ext not in ['jpg', 'jpeg', 'png', 'bmp']:
+                raise ValidationError('Допустимые форматы: jpg, jpeg, png, bmp')
+
+            # 2. Проверка размера (2 МБ = 2 * 1024 * 1024 байт)
+            if photo.size > 2 * 1024 * 1024:
+                raise ValidationError('Размер файла не должен превышать 2 МБ')
+        return photo

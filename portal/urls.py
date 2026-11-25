@@ -12,4 +12,6 @@ urlpatterns = [
 
     # Личный кабинет (заглушка до ПР 2.2)
     path('cabinet/', views.cabinet, name='cabinet'),
+    path('cabinet/create/', views.create_request, name='create_request'),
+    path('cabinet/delete/<int:pk>/', views.delete_request, name='delete_request'),
 ]

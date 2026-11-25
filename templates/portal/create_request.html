@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Создание заявки на дизайн</h2>
+<!-- enctype="multipart/form-data" ОБЯЗАТЕЛЕН для загрузки файлов! -->
+<form method="post" enctype="multipart/form-data" class="w-75">
+    {% csrf_token %}
+    
+    {% for field in form %}
+        <div class="mb-3">
+            <label class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div class="text-danger small">{{ field.errors.0 }}</div>
+            {% endif %}
+            {% if field.help_text %}
+                <div class="form-text">{{ field.help_text }}</div>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">Отправить заявку</button>
+    <a href="{% url 'cabinet' %}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}
