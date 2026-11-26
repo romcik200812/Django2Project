@@ -6,7 +6,7 @@
     <a href="{% url 'create_request' %}" class="btn btn-success">➕ Создать заявку</a>
 </div>
 
-<!-- Фильтры -->
+<!-- Фильтры по статусу -->
 <div class="mb-3">
     <a href="{% url 'cabinet' %}" class="btn btn-sm {% if not status_filter %}btn-primary{% else %}btn-outline-primary{% endif %}">Все</a>
     <a href="{% url 'cabinet' %}?status=new" class="btn btn-sm {% if status_filter == 'new' %}btn-primary{% else %}btn-outline-primary{% endif %}">Новые</a>
@@ -14,16 +14,18 @@
     <a href="{% url 'cabinet' %}?status=done" class="btn btn-sm {% if status_filter == 'done' %}btn-primary{% else %}btn-outline-primary{% endif %}">Выполнено</a>
 </div>
 
-<!-- Таблица заявок -->
 <div class="table-responsive">
-    <table class="table table-hover">
+    <table class="table table-hover align-middle">
         <thead class="table-dark">
             <tr>
                 <th>Дата</th>
+                <th>Фото</th>
                 <th>Название</th>
                 <th>Описание</th>
                 <th>Категория</th>
                 <th>Статус</th>
+                <th>Комментарий</th>
+                <th>Дизайн</th>
                 <th>Действия</th>
             </tr>
         </thead>
@@ -31,15 +33,47 @@
             {% for req in requests %}
             <tr>
                 <td>{{ req.created_at|date:"d.m.Y H:i" }}</td>
+
+                <!-- Фото помещения -->
+                <td>
+                    {% if req.photo %}
+                        <img src="{{ req.photo.url }}" alt="{{ req.title }}"
+                             class="rounded border" style="width: 90px; height: 70px; object-fit: cover;">
+                    {% else %}
+                        <span class="text-muted small">Нет фото</span>
+                    {% endif %}
+                </td>
+
                 <td>{{ req.title }}</td>
                 <td>{{ req.description|truncatewords:10 }}</td>
                 <td>{{ req.category.name }}</td>
+
                 <td>
                     {% if req.status == 'new' %}<span class="badge bg-info">Новая</span>
                     {% elif req.status == 'in_progress' %}<span class="badge bg-warning text-dark">В работе</span>
                     {% elif req.status == 'done' %}<span class="badge bg-success">Выполнено</span>
                     {% endif %}
                 </td>
+
+                <!-- Комментарий администратора -->
+                <td>
+                    {% if req.comment %}
+                        <small>{{ req.comment }}</small>
+                    {% else %}
+                        <span class="text-muted small">—</span>
+                    {% endif %}
+                </td>
+
+                <!-- Готовый дизайн (если заявка выполнена) -->
+                <td>
+                    {% if req.design_image %}
+                        <img src="{{ req.design_image.url }}" alt="Дизайн"
+                             class="rounded border" style="width: 90px; height: 70px; object-fit: cover;">
+                    {% else %}
+                        <span class="text-muted small">—</span>
+                    {% endif %}
+                </td>
+
                 <td>
                     {% if req.status == 'new' %}
                         <a href="{% url 'delete_request' req.pk %}" class="btn btn-danger btn-sm">Удалить</a>
@@ -50,7 +84,9 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="6" class="text-center py-4">У вас пока нет заявок. <a href="{% url 'create_request' %}">Создать первую?</a></td>
+                <td colspan="9" class="text-center py-4">
+                    У вас пока нет заявок. <a href="{% url 'create_request' %}">Создать первую?</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
