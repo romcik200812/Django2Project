@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">Подтверждение удаления категории</div>
+            <div class="card-body">
+                <h5 class="card-title">Вы уверены?</h5>
+                <p>Вы собираетесь удалить категорию: <strong>{{ category.name }}</strong></p>
+                <div class="alert alert-warning">
+                    <strong>Внимание!</strong> При удалении категории будут удалены <strong>все заявки</strong>, относящиеся к этой категории. Это действие нельзя отменить.
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Да, удалить категорию и все её заявки</button>
+                    <a href="{% url 'admin_categories' %}" class="btn btn-secondary">Отмена</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

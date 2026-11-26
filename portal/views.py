@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm, LoginForm, RequestForm
-from .models import Request
+from .models import Request, Category
 from django.contrib.admin.views.decorators import staff_member_required
 
 # ... (функции home, register, user_login, user_logout оставляем как были) ...

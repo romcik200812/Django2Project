@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Управление категориями</h2>
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Назад к заявкам</a>
+</div>
+
+<div class="row">
+    <!-- Форма добавления категории -->
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Добавить категорию</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Название категории</label>
+                        <input type="text" name="name" class="form-control" required placeholder="Например: 3D-дизайн">
+                    </div>
+                    <button type="submit" class="btn btn-success">Добавить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Список категорий -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Существующие категории ({{ total_categories }})</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                {% for category in categories %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{{ category.name }}</span>
+                    <a href="{% url 'delete_category' category.pk %}" class="btn btn-danger btn-sm">Удалить</a>
+                </div>
+                {% empty %}
+                <div class="list-group-item text-center text-muted">
+                    Нет категорий
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
